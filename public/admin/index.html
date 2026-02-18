@@ -366,11 +366,15 @@
 
     // --- 初期化 ---
     window.addEventListener('DOMContentLoaded', function() {
-      var saved = localStorage.getItem('cb_token');
-      if (saved) {
-        token = saved;
-        verifyAndShow();
-      }
+      fetch('/.netlify/functions/get-token')
+        .then(function(r) { return r.json(); })
+        .then(function(res) {
+          if (res.token) {
+            token = res.token;
+            verifyAndShow();
+          }
+        })
+        .catch(function() {});
     });
 
     // --- API呼び出し ---
