@@ -122,15 +122,14 @@
     .btn-primary:hover { background: #1a365d; }
 
     .btn-secondary {
-      background: transparent;
-      color: var(--ink);
-      border: 1px dashed var(--ink);
+      background: var(--ink);
+      color: #fff;
     }
 
-    .btn-secondary:hover { background: var(--bg); }
+    .btn-secondary:hover { background: #1a365d; }
 
     .btn-sm {
-      padding: 5px 10px;
+      padding: 6px 12px;
       font-size: 10px;
     }
 
@@ -277,17 +276,19 @@
     .logout-link {
       display: block;
       text-align: center;
-      padding: 14px;
-      color: var(--ink);
+      padding: 10px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
+      font-weight: 700;
       cursor: pointer;
-      letter-spacing: 1px;
-      border: 1px dashed var(--ink);
-      margin-top: 4px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
       transition: background 0.15s;
     }
 
-    .logout-link:hover { background: var(--bg); }
+    .logout-link:hover { background: #1a365d; }
   </style>
 </head>
 <body>
