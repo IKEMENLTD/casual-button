@@ -22,12 +22,7 @@ export default async (req, context) => {
     try {
       const padded = token + '='.repeat((4 - token.length % 4) % 4);
       const base64 = padded.replace(/-/g, '+').replace(/_/g, '/');
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) {
-        bytes[i] = binary.charCodeAt(i);
-      }
-      const decoded = new TextDecoder('utf-8').decode(bytes);
+      const decoded = Buffer.from(base64, 'base64').toString('utf-8');
       payload = JSON.parse(decoded);
     } catch (e) {
       return new Response(errorPage('リンクが無効です', 'リンクの形式が正しくありません。'), {
