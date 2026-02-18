@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Casual Button 管理画面</title>
+  <style>
+    :root {
+      --primary: #0056b3;
+      --primary-light: #e6f0fa;
+      --bg: #F9FAFB;
+      --surface: #ffffff;
+      --text: #212529;
+      --text-muted: #6c757d;
+      --border: #dee2e6;
+      --green: #D1FAE5;
+      --green-border: #10b981;
+      --yellow: #FEF3C7;
+      --yellow-border: #f59e0b;
+      --gray: #F3F4F6;
+      --gray-border: #9ca3af;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    /* ヘッダー */
+    .header {
+      background: var(--primary);
+      color: #fff;
+      padding: 16px 20px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* セクション */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* フォーム */
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    input[type="text"]:focus, input[type="password"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    .form-group { margin-bottom: 12px; }
+
+    /* ボタン */
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s;
+    }
+
+    .btn:active { opacity: 0.7; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+      width: 100%;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+
+    /* スニペット表示エリア */
+    .snippet-result { display: none; margin-top: 16px; }
+    .snippet-result.show { display: block; }
+
+    .snippet-success {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--green-border);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+    .snippet-box {
+      background: #f8f9fa;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 180px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+    }
+
+    .snippet-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .snippet-actions .btn { flex: 1; text-align: center; }
+
+    /* 候補者カード */
+    .card-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .candidate-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      border-left: 4px solid var(--border);
+      padding: 12px 12px 12px 14px;
+    }
+
+    .candidate-card.green { border-left-color: var(--green-border); background: #f0fdf4; }
+    .candidate-card.yellow { border-left-color: var(--yellow-border); background: #fffbeb; }
+    .candidate-card.gray { border-left-color: var(--gray-border); background: var(--gray); }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+
+    .card-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .card-response {
+      font-size: 0.8rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .card-response.green { color: #065f46; }
+    .card-response.yellow { color: #92400e; }
+    .card-response.gray { color: #4b5563; }
+    .card-response.none { color: var(--text-muted); }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .card-meta {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* 認証画面 */
+    #auth-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .auth-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px 24px;
+      max-width: 360px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .auth-card h2 {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .auth-error {
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* メイン画面 */
+    #main-screen { display: none; }
+
+    /* ローディング */
+    .loading {
+      text-align: center;
+      padding: 24px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* 空メッセージ */
+    .empty-msg {
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ログアウト */
+    .logout-link {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 認証画面 -->
+  <div id="auth-screen">
+    <div class="auth-card">
+      <h2>アクセストークンを入力してください</h2>
+      <div class="form-group">
+        <input type="password" id="token-input" placeholder="トークン">
+      </div>
+      <button class="btn btn-primary" id="login-btn" onclick="login()">ログイン</button>
+      <p class="auth-error" id="auth-error">トークンが正しくありません</p>
+    </div>
+  </div>
+
+  <!-- メイン画面 -->
+  <div id="main-screen">
+    <div class="header">Casual Button</div>
+    <div class="container">
+
+      <!-- 候補者登録セクション -->
+      <div class="section">
+        <div class="section-title">候補者登録</div>
+        <div id="register-form">
+          <div class="form-group">
+            <label>候補者名 *</label>
+            <input type="text" id="candidate-name" placeholder="例: 山田太郎">
+          </div>
+          <div class="form-group">
+            <label>メモ（任意）</label>
+            <input type="text" id="candidate-memo" placeholder="例: Wantedly エンジニア">
+          </div>
+          <button class="btn btn-primary" id="generate-btn" onclick="register()">スニペットを生成</button>
+        </div>
+
+        <div class="snippet-result" id="snippet-result">
+          <div class="snippet-success">&#10003; 生成完了</div>
+          <div class="snippet-box" id="snippet-box"></div>
+          <div class="snippet-actions">
+            <button class="btn btn-primary" id="copy-btn" onclick="copySnippet()">スニペットをコピー</button>
+            <button class="btn btn-secondary" onclick="resetForm()">続けて登録</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 回答状況一覧セクション -->
+      <div class="section">
+        <div class="section-title">
+          回答状況
+          <button class="btn btn-secondary btn-sm" onclick="loadList()">更新</button>
+        </div>
+        <div id="candidate-list">
+          <div class="loading">読み込み中...</div>
+        </div>
+      </div>
+
+      <div class="logout-link" onclick="logout()">ログアウト</div>
+    </div>
+  </div>
+
+  <script>
+    var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyxYwQUqZxyUfbp20I5z0AcfewIHuLKncG0L-c8aPCCT8REaFxplqjnHJtUYCGt0_SjHg/exec';
+    var token = '';
+    var currentSnippet = '';
+
+    // --- 初期化 ---
+    window.addEventListener('DOMContentLoaded', function() {
+      var saved = localStorage.getItem('cb_token');
+      if (saved) {
+        token = saved;
+        verifyAndShow();
+      }
+    });
+
+    // --- API呼び出し ---
+    function apiPost(data) {
+      return fetch(GAS_API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify(data),
+        redirect: 'follow'
+      }).then(function(r) { return r.json(); });
+    }
+
+    // --- 認証 ---
+    function login() {
+      var input = document.getElementById('token-input').value.trim();
+      if (!input) return;
+      token = input;
+      document.getElementById('login-btn').disabled = true;
+      document.getElementById('auth-error').style.display = 'none';
+      verifyAndShow();
+    }
+
+    function verifyAndShow() {
+      apiPost({ action: 'list', token: token })
+        .then(function(res) {
+          if (res.status === 'ok') {
+            localStorage.setItem('cb_token', token);
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('main-screen').style.display = 'block';
+            renderList(res.candidates);
+          } else {
+            authFail();
+          }
+        })
+        .catch(function() { authFail(); });
+    }
+
+    function authFail() {
+      token = '';
+      localStorage.removeItem('cb_token');
+      document.getElementById('auth-error').style.display = 'block';
+      document.getElementById('login-btn').disabled = false;
+      document.getElementById('auth-screen').style.display = '';
+      document.getElementById('main-screen').style.display = 'none';
+    }
+
+    function logout() {
+      token = '';
+      localStorage.removeItem('cb_token');
+      document.getElementById('auth-screen').style.display = '';
+      document.getElementById('main-screen').style.display = 'none';
+      document.getElementById('token-input').value = '';
+      document.getElementById('auth-error').style.display = 'none';
+      document.getElementById('login-btn').disabled = false;
+    }
+
+    // --- 候補者登録 ---
+    function register() {
+      var name = document.getElementById('candidate-name').value.trim();
+      var memo = document.getElementById('candidate-memo').value.trim();
+      if (!name) {
+        document.getElementById('candidate-name').focus();
+        return;
+      }
+
+      var btn = document.getElementById('generate-btn');
+      btn.disabled = true;
+      btn.textContent = '生成中...';
+
+      apiPost({ action: 'register', token: token, candidate_name: name, memo: memo })
+        .then(function(res) {
+          if (res.status === 'ok') {
+            currentSnippet = res.snippet;
+            document.getElementById('snippet-box').textContent = res.snippet;
+            document.getElementById('snippet-result').classList.add('show');
+            document.getElementById('register-form').style.display = 'none';
+            loadList();
+          } else if (res.code === 'AUTH_FAILED') {
+            authFail();
+          } else {
+            alert('エラー: ' + (res.message || '登録に失敗しました'));
+          }
+        })
+        .catch(function() { alert('通信エラーが発生しました'); })
+        .finally(function() {
+          btn.disabled = false;
+          btn.textContent = 'スニペットを生成';
+        });
+    }
+
+    function copySnippet() {
+      var btn = document.getElementById('copy-btn');
+      navigator.clipboard.writeText(currentSnippet).then(function() {
+        btn.textContent = '\u2713 コピーしました';
+        setTimeout(function() { btn.textContent = 'スニペットをコピー'; }, 2000);
+      }).catch(function() {
+        fallbackCopy(currentSnippet);
+        btn.textContent = '\u2713 コピーしました';
+        setTimeout(function() { btn.textContent = 'スニペットをコピー'; }, 2000);
+      });
+    }
+
+    function fallbackCopy(text) {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+
+    function resetForm() {
+      document.getElementById('candidate-name').value = '';
+      document.getElementById('candidate-memo').value = '';
+      document.getElementById('register-form').style.display = '';
+      document.getElementById('snippet-result').classList.remove('show');
+      currentSnippet = '';
+    }
+
+    // --- 候補者一覧 ---
+    function loadList() {
+      var el = document.getElementById('candidate-list');
+      el.innerHTML = '<div class="loading">読み込み中...</div>';
+
+      apiPost({ action: 'list', token: token })
+        .then(function(res) {
+          if (res.status === 'ok') {
+            renderList(res.candidates);
+          } else if (res.code === 'AUTH_FAILED') {
+            authFail();
+          }
+        })
+        .catch(function() {
+          el.innerHTML = '<div class="empty-msg">読み込みに失敗しました</div>';
+        });
+    }
+
+    function renderList(candidates) {
+      var el = document.getElementById('candidate-list');
+
+      if (!candidates || candidates.length === 0) {
+        el.innerHTML = '<div class="empty-msg">候補者がまだ登録されていません</div>';
+        return;
+      }
+
+      var html = '<div class="card-list">';
+      for (var i = 0; i < candidates.length; i++) {
+        var c = candidates[i];
+        var colorClass = getColorClass(c.response);
+        var responseLabel = c.response || '未回答';
+        var responseClass = colorClass || 'none';
+        var dateStr = '';
+        if (c.responded_at) {
+          dateStr = formatDate(c.responded_at);
+        } else if (c.created_at) {
+          dateStr = '生成: ' + formatDate(c.created_at);
+        }
+
+        html += '<div class="candidate-card ' + (colorClass || '') + '">';
+        html += '<div class="card-top">';
+        html += '<span class="card-name">' + esc(c.candidate_name) + '</span>';
+        html += '<span class="card-response ' + responseClass + '">' + esc(responseLabel) + '</span>';
+        html += '</div>';
+        html += '<div class="card-bottom">';
+        html += '<span class="card-meta">' + esc(c.memo || '') + (c.memo && dateStr ? '  ' : '') + esc(dateStr) + '</span>';
+        html += '<button class="btn btn-secondary btn-sm" onclick="copyCard(' + i + ')">コピー</button>';
+        html += '</div>';
+        html += '</div>';
+      }
+      html += '</div>';
+      el.innerHTML = html;
+
+      // カードデータを保持
+      window._candidates = candidates;
+    }
+
+    function copyCard(index) {
+      var c = window._candidates[index];
+      if (!c || !c.snippet) return;
+      navigator.clipboard.writeText(c.snippet).then(function() {
+        showCopyDone(index);
+      }).catch(function() {
+        fallbackCopy(c.snippet);
+        showCopyDone(index);
+      });
+    }
+
+    function showCopyDone(index) {
+      var btns = document.querySelectorAll('.candidate-card .btn-sm');
+      if (btns[index]) {
+        btns[index].textContent = '\u2713';
+        setTimeout(function() { btns[index].textContent = 'コピー'; }, 1500);
+      }
+    }
+
+    function getColorClass(response) {
+      if (!response) return '';
+      if (response.indexOf('話だけ聞いてみたい') !== -1) return 'green';
+      if (response.indexOf('半年後') !== -1) return 'yellow';
+      if (response.indexOf('今は考えていない') !== -1) return 'gray';
+      return '';
+    }
+
+    function formatDate(iso) {
+      if (!iso) return '';
+      var d = new Date(iso);
+      var m = d.getMonth() + 1;
+      var day = d.getDate();
+      var h = ('0' + d.getHours()).slice(-2);
+      var min = ('0' + d.getMinutes()).slice(-2);
+      return m + '/' + day + ' ' + h + ':' + min;
+    }
+
+    function esc(str) {
+      if (!str) return '';
+      var d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
+    // Enterキーで操作
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        if (document.getElementById('auth-screen').style.display !== 'none' &&
+            document.activeElement === document.getElementById('token-input')) {
+          login();
+        }
+      }
+    });
+  </script>
+</body>
+</html>
