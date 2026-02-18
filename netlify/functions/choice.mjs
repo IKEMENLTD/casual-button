@@ -70,8 +70,17 @@ export default async (req, context) => {
       return { label: opt.label, url: siteUrl + '/c/' + encoded };
     });
 
+    // GAS APIにサーバー側から回答を記録（クライアント側では不安定なため）
+    if (gasApiUrl) {
+      try {
+        await fetch(`${gasApiUrl}?action=respond&id=${encodeURIComponent(candidateId)}&option=${encodeURIComponent(String(optionId))}`, { redirect: 'follow' });
+      } catch (e) {
+        // 記録失敗しても候補者の画面には影響なし
+      }
+    }
+
     // サンクスページHTMLを生成
-    const html = thankYouPage(candidateName, selectedLabel, thankYouMessage, changeLinks, companyName, gasApiUrl, candidateId, optionId);
+    const html = thankYouPage(candidateName, selectedLabel, thankYouMessage, changeLinks, companyName);
 
     return new Response(html, {
       status: 200,
@@ -89,17 +98,10 @@ export default async (req, context) => {
 /**
  * サンクスページHTML
  */
-function thankYouPage(name, label, message, changeLinks, company, gasApiUrl, candidateId, optionId) {
+function thankYouPage(name, label, message, changeLinks, company) {
   const changeLinkHtml = changeLinks.map(link =>
     `<a href="${escapeHtml(link.url)}" class="change-link">${escapeHtml(link.label)}</a>`
   ).join('');
-
-  const beaconUrl = gasApiUrl
-    ? `${escapeHtml(gasApiUrl)}?action=respond&id=${escapeHtml(candidateId)}&option=${escapeHtml(String(optionId))}`
-    : '';
-  const beaconScript = beaconUrl
-    ? `<iframe src="${beaconUrl}" style="display:none" width="0" height="0"></iframe>`
-    : '';
 
   return `<!DOCTYPE html>
 <html lang="ja">
@@ -251,7 +253,6 @@ function thankYouPage(name, label, message, changeLinks, company, gasApiUrl, can
     </div>
     <p class="company-name">${escapeHtml(company)}</p>
   </div>
-  ${beaconScript}
 </body>
 </html>`;
 }
