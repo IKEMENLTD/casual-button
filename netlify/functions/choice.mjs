@@ -204,9 +204,11 @@ function thankYouPage(name, label, message, changeLinks, company) {
       border: 1px dashed var(--ink);
       color: var(--ink);
       text-decoration: none;
+      font-family: 'Hiragino Sans', 'Noto Sans JP', sans-serif;
       font-size: 13px;
       font-weight: 700;
       text-align: center;
+      letter-spacing: 0;
       transition: background 0.15s;
     }
 
