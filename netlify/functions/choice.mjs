@@ -63,7 +63,7 @@ export default async (req, context) => {
     const otherOptions = options.filter(opt => String(opt.id) !== String(optionId));
     const changeLinks = otherOptions.map(opt => {
       const newPayload = JSON.stringify({ i: candidateId, o: opt.id, n: candidateName });
-      const encoded = btoa(newPayload)
+      const encoded = Buffer.from(newPayload, 'utf-8').toString('base64')
         .replace(/\+/g, '-')
         .replace(/\//g, '_')
         .replace(/=+$/, '');
