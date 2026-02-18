@@ -284,8 +284,8 @@ function errorPage(title, message) {
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    h1 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
-    p { font-size: 12px; opacity: 0.7; line-height: 1.8; }
+    h1 { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+    p { font-size: 14px; line-height: 1.8; }
   </style>
 </head>
 <body>
