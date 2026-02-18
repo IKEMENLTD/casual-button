@@ -97,7 +97,7 @@ function thankYouPage(name, label, message, changeLinks, company, gasApiUrl, can
   const beaconScript = gasApiUrl
     ? `<script>
     try {
-      navigator.sendBeacon("${escapeHtml(gasApiUrl)}?action=respond&id=${escapeHtml(candidateId)}&option=${escapeHtml(String(optionId))}");
+      new Image().src = "${escapeHtml(gasApiUrl)}?action=respond&id=${escapeHtml(candidateId)}&option=${escapeHtml(String(optionId))}";
     } catch(e) {}
   </script>`
     : '';
