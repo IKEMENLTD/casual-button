@@ -6,151 +6,163 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Casual Button 管理画面</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
     :root {
-      --primary: #0056b3;
-      --primary-light: #e6f0fa;
-      --bg: #F9FAFB;
-      --surface: #ffffff;
-      --text: #212529;
-      --text-muted: #6c757d;
-      --border: #dee2e6;
-      --green: #D1FAE5;
+      --bg: #f0f4f8;
+      --ink: #2a4365;
+      --line: rgba(42, 67, 101, 0.1);
+      --surface: #fff;
+      --muted: rgba(42, 67, 101, 0.5);
       --green-border: #10b981;
-      --yellow: #FEF3C7;
       --yellow-border: #f59e0b;
-      --gray: #F3F4F6;
       --gray-border: #9ca3af;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: system-ui, 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
+      font-family: 'JetBrains Mono', monospace;
       background: var(--bg);
-      color: var(--text);
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--ink);
       min-height: 100vh;
       padding: 0;
     }
 
     .container {
-      max-width: 480px;
+      max-width: 500px;
       margin: 0 auto;
-      padding: 16px;
+      padding: 20px;
     }
 
     /* ヘッダー */
     .header {
-      background: var(--primary);
+      background: var(--ink);
       color: #fff;
-      padding: 16px 20px;
-      font-size: 1.1rem;
+      padding: 14px 20px;
+      font-size: 14px;
       font-weight: 700;
       text-align: center;
+      letter-spacing: 2px;
+      text-transform: uppercase;
     }
 
     /* セクション */
     .section {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 16px;
+      border: 1px solid var(--ink);
+      box-shadow: 0 6px 0 var(--ink);
+      padding: 24px;
+      margin-bottom: 20px;
     }
 
     .section-title {
-      font-size: 0.95rem;
+      font-size: 11px;
       font-weight: 700;
-      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      opacity: 0.6;
     }
 
     /* フォーム */
     label {
       display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 400;
+      color: var(--ink);
+      opacity: 0.6;
       margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     input[type="text"], input[type="password"] {
       width: 100%;
       padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 0.95rem;
+      border: 1px solid var(--ink);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
       outline: none;
       background: var(--surface);
-      color: var(--text);
+      color: var(--ink);
     }
 
     input[type="text"]:focus, input[type="password"]:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px var(--primary-light);
+      box-shadow: 0 0 0 2px rgba(42, 67, 101, 0.2);
     }
 
-    .form-group { margin-bottom: 12px; }
+    .form-group { margin-bottom: 14px; }
 
     /* ボタン */
     .btn {
       display: inline-block;
       padding: 10px 20px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      font-weight: 600;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
       cursor: pointer;
       border: none;
-      transition: opacity 0.15s;
+      transition: background 0.15s;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .btn:active { opacity: 0.7; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
     .btn-primary {
-      background: var(--primary);
+      background: var(--ink);
       color: #fff;
       width: 100%;
     }
 
+    .btn-primary:hover { background: #1a365d; }
+
     .btn-secondary {
       background: transparent;
-      color: var(--primary);
-      border: 1px solid var(--border);
+      color: var(--ink);
+      border: 1px dashed var(--ink);
     }
 
+    .btn-secondary:hover { background: var(--bg); }
+
     .btn-sm {
-      padding: 6px 12px;
-      font-size: 0.8rem;
+      padding: 5px 10px;
+      font-size: 10px;
     }
 
     /* スニペット表示エリア */
-    .snippet-result { display: none; margin-top: 16px; }
+    .snippet-result { display: none; margin-top: 20px; }
     .snippet-result.show { display: block; }
 
     .snippet-success {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--green-border);
-      font-weight: 600;
-      font-size: 0.9rem;
-      margin-bottom: 12px;
+      display: inline-block;
+      border: 1px solid var(--ink);
+      padding: 2px 10px;
+      font-size: 10px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .snippet-box {
-      background: #f8f9fa;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 0.8rem;
-      line-height: 1.5;
+      background: var(--bg);
+      border: 1px solid var(--ink);
+      padding: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.6;
       white-space: pre-wrap;
       word-break: break-all;
       max-height: 180px;
       overflow-y: auto;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .snippet-actions {
@@ -161,42 +173,41 @@
     .snippet-actions .btn { flex: 1; text-align: center; }
 
     /* 候補者カード */
-    .card-list { display: flex; flex-direction: column; gap: 8px; }
+    .card-list { display: flex; flex-direction: column; gap: 10px; }
 
     .candidate-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      border-left: 4px solid var(--border);
-      padding: 12px 12px 12px 14px;
+      border: 1px solid var(--ink);
+      border-left: 4px solid var(--ink);
+      padding: 12px 14px;
     }
 
-    .candidate-card.green { border-left-color: var(--green-border); background: #f0fdf4; }
-    .candidate-card.yellow { border-left-color: var(--yellow-border); background: #fffbeb; }
-    .candidate-card.gray { border-left-color: var(--gray-border); background: var(--gray); }
+    .candidate-card.green { border-left-color: var(--green-border); }
+    .candidate-card.yellow { border-left-color: var(--yellow-border); }
+    .candidate-card.gray { border-left-color: var(--gray-border); }
 
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
     }
 
     .card-name {
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 14px;
     }
 
     .card-response {
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
-    .card-response.green { color: #065f46; }
-    .card-response.yellow { color: #92400e; }
-    .card-response.gray { color: #4b5563; }
-    .card-response.none { color: var(--text-muted); }
+    .card-response.green { color: var(--green-border); }
+    .card-response.yellow { color: var(--yellow-border); }
+    .card-response.gray { color: var(--gray-border); }
+    .card-response.none { color: var(--muted); }
 
     .card-bottom {
       display: flex;
@@ -206,8 +217,8 @@
     }
 
     .card-meta {
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 10px;
+      color: var(--muted);
     }
 
     /* 認証画面 */
@@ -221,22 +232,25 @@
 
     .auth-card {
       background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 32px 24px;
-      max-width: 360px;
+      border: 1px solid var(--ink);
+      box-shadow: 0 6px 0 var(--ink);
+      padding: 40px 30px;
+      max-width: 380px;
       width: 100%;
       text-align: center;
     }
 
     .auth-card h2 {
-      font-size: 1rem;
-      margin-bottom: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 24px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .auth-error {
-      color: #dc2626;
-      font-size: 0.85rem;
+      color: #c53030;
+      font-size: 11px;
       margin-top: 12px;
       display: none;
     }
@@ -248,27 +262,33 @@
     .loading {
       text-align: center;
       padding: 24px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     /* 空メッセージ */
     .empty-msg {
       text-align: center;
       padding: 20px;
-      color: var(--text-muted);
-      font-size: 0.9rem;
+      color: var(--muted);
+      font-size: 11px;
     }
 
     /* ログアウト */
     .logout-link {
       display: block;
       text-align: center;
-      padding: 12px;
-      color: var(--text-muted);
-      font-size: 0.8rem;
+      padding: 14px;
+      color: var(--muted);
+      font-size: 10px;
       cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
+
+    .logout-link:hover { color: var(--ink); }
   </style>
 </head>
 <body>

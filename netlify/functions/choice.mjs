@@ -111,28 +111,22 @@ function thankYouPage(name, label, message, changeLinks, company) {
   <meta name="robots" content="noindex, nofollow">
   <title>ご回答ありがとうございます</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
     :root {
-      --primary: #0056b3;
-      --primary-light: #e6f0fa;
-      --surface: #ffffff;
-      --background: #f4f6f9;
-      --text-main: #212529;
-      --text-muted: #6c757d;
-      --border: #dee2e6;
-      --success: #d1fae5;
-      --success-text: #065f46;
+      --bg: #f0f4f8;
+      --ink: #2a4365;
+      --line: rgba(42, 67, 101, 0.1);
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background-color: var(--background);
-      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--ink);
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -141,107 +135,96 @@ function thankYouPage(name, label, message, changeLinks, company) {
     }
 
     .card {
-      background: var(--surface);
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
-      border: 1px solid var(--border);
-      padding: 40px 32px;
-      max-width: 480px;
+      background: #fff;
+      max-width: 500px;
       width: 100%;
+      padding: 50px 40px;
+      border: 1px solid var(--ink);
+      box-shadow: 0 10px 0 var(--ink);
       text-align: center;
     }
 
     .check-icon {
-      width: 64px;
-      height: 64px;
-      background-color: var(--success);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 28px;
-      color: var(--success-text);
-      font-weight: bold;
+      display: inline-block;
+      border: 1px solid var(--ink);
+      padding: 2px 10px;
+      font-size: 10px;
+      margin-bottom: 30px;
+      font-weight: 400;
     }
 
     h1 {
-      font-size: 1.35rem;
+      font-size: 18px;
       font-weight: 700;
-      color: var(--text-main);
-      margin-bottom: 20px;
-      line-height: 1.4;
+      margin-bottom: 30px;
     }
 
     .response-label {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
+      font-size: 11px;
+      opacity: 0.6;
+      margin-bottom: 6px;
     }
 
     .response-value {
       display: inline-block;
-      background-color: var(--primary-light);
-      color: var(--primary);
-      font-weight: 600;
-      font-size: 0.95rem;
-      padding: 6px 16px;
-      border-radius: 4px;
-      margin-bottom: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 24px;
     }
 
     .thank-message {
-      font-size: 0.95rem;
-      color: var(--text-main);
-      line-height: 1.7;
-      margin-bottom: 28px;
+      font-size: 12px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+      opacity: 0.8;
     }
 
     .divider {
       border: none;
-      border-top: 1px solid var(--border);
-      margin: 0 0 24px;
+      border-top: 1px solid var(--line);
+      margin: 0 0 30px;
     }
 
     .change-section-title {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 12px;
+      font-size: 10px;
+      opacity: 0.6;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
 
     .change-links {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 28px;
+      gap: 12px;
+      margin-bottom: 30px;
     }
 
     .change-link {
       display: block;
-      padding: 12px 16px;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      color: var(--primary);
+      padding: 10px;
+      border: 1px dashed var(--ink);
+      color: var(--ink);
       text-decoration: none;
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: background-color 0.15s, border-color 0.15s;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-align: center;
+      transition: background 0.15s;
     }
 
     .change-link:hover {
-      background-color: var(--primary-light);
-      border-color: var(--primary);
+      background: var(--bg);
     }
 
     .company-name {
-      font-size: 0.8rem;
-      color: var(--text-muted);
+      font-size: 10px;
+      opacity: 0.5;
     }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="check-icon">&#10003;</div>
+    <div class="check-icon">STATUS: RECORDED</div>
     <h1>ご回答ありがとうございます</h1>
     <p class="response-label">${escapeHtml(name)}さんの回答:</p>
     <p class="response-value">「${escapeHtml(label)}」</p>
@@ -269,11 +252,14 @@ function errorPage(title, message) {
   <meta name="robots" content="noindex, nofollow">
   <title>${escapeHtml(title)}</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      background-color: #f4f6f9;
-      color: #212529;
+      font-family: 'JetBrains Mono', monospace;
+      background: #f0f4f8;
+      background-image: linear-gradient(rgba(42,67,101,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(42,67,101,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #2a4365;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -281,34 +267,31 @@ function errorPage(title, message) {
       padding: 20px;
     }
     .card {
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 4px 16px rgba(0,0,0,0.06);
-      border: 1px solid #dee2e6;
-      padding: 40px 32px;
-      max-width: 480px;
+      background: #fff;
+      max-width: 500px;
       width: 100%;
+      padding: 50px 40px;
+      border: 1px solid #2a4365;
+      box-shadow: 0 10px 0 #2a4365;
       text-align: center;
     }
     .error-icon {
-      width: 64px;
-      height: 64px;
-      background-color: #fee2e2;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 24px;
-      font-size: 28px;
-      color: #991b1b;
+      display: inline-block;
+      border: 1px solid #c53030;
+      padding: 2px 10px;
+      font-size: 10px;
+      color: #c53030;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
     }
-    h1 { font-size: 1.25rem; font-weight: 700; margin-bottom: 12px; }
-    p { font-size: 0.95rem; color: #6c757d; line-height: 1.6; }
+    h1 { font-size: 18px; font-weight: 700; margin-bottom: 16px; }
+    p { font-size: 12px; opacity: 0.7; line-height: 1.8; }
   </style>
 </head>
 <body>
   <div class="card">
-    <div class="error-icon">!</div>
+    <div class="error-icon">ERROR</div>
     <h1>${escapeHtml(title)}</h1>
     <p>${escapeHtml(message)}</p>
   </div>
