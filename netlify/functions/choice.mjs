@@ -94,12 +94,11 @@ function thankYouPage(name, label, message, changeLinks, company, gasApiUrl, can
     `<a href="${escapeHtml(link.url)}" class="change-link">${escapeHtml(link.label)}</a>`
   ).join('');
 
-  const beaconScript = gasApiUrl
-    ? `<script>
-    try {
-      new Image().src = "${escapeHtml(gasApiUrl)}?action=respond&id=${escapeHtml(candidateId)}&option=${escapeHtml(String(optionId))}";
-    } catch(e) {}
-  </script>`
+  const beaconUrl = gasApiUrl
+    ? `${escapeHtml(gasApiUrl)}?action=respond&id=${escapeHtml(candidateId)}&option=${escapeHtml(String(optionId))}`
+    : '';
+  const beaconScript = beaconUrl
+    ? `<iframe src="${beaconUrl}" style="display:none" width="0" height="0"></iframe>`
     : '';
 
   return `<!DOCTYPE html>
