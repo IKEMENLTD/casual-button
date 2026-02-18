@@ -79,7 +79,7 @@
       letter-spacing: 0.5px;
     }
 
-    input[type="text"], input[type="password"] {
+    input[type="text"] {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid var(--ink);
@@ -90,7 +90,7 @@
       color: var(--ink);
     }
 
-    input[type="text"]:focus, input[type="password"]:focus {
+    input[type="text"]:focus {
       box-shadow: 0 0 0 2px rgba(42, 67, 101, 0.2);
     }
 
@@ -226,43 +226,6 @@
       color: var(--muted);
     }
 
-    /* 認証画面 */
-    #auth-screen {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-    }
-
-    .auth-card {
-      background: var(--surface);
-      border: 1px solid var(--ink);
-      box-shadow: 0 6px 0 var(--ink);
-      padding: 40px 30px;
-      max-width: 380px;
-      width: 100%;
-      text-align: center;
-    }
-
-    .auth-card h2 {
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .auth-error {
-      color: #c53030;
-      font-size: 11px;
-      margin-top: 12px;
-      display: none;
-    }
-
-    /* メイン画面 */
-    #main-screen { display: none; }
-
     /* ローディング */
     .loading {
       text-align: center;
@@ -280,102 +243,54 @@
       color: var(--muted);
       font-size: 11px;
     }
-
-    /* ログアウト */
-    .logout-link {
-      display: block;
-      text-align: center;
-      padding: 10px 20px;
-      background: var(--ink);
-      color: #fff;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      transition: background 0.15s;
-    }
-
-    .logout-link:hover { background: #1a365d; }
   </style>
 </head>
 <body>
 
-  <!-- 認証画面 -->
-  <div id="auth-screen">
-    <div class="auth-card">
-      <h2>アクセストークンを入力してください</h2>
-      <div class="form-group">
-        <input type="password" id="token-input" placeholder="トークン">
+  <div class="header">Casual Button</div>
+  <div class="container">
+
+    <!-- 候補者登録セクション -->
+    <div class="section">
+      <div class="section-title">候補者登録</div>
+      <div id="register-form">
+        <div class="form-group">
+          <label>候補者名 *</label>
+          <input type="text" id="candidate-name" placeholder="例: 山田太郎">
+        </div>
+        <div class="form-group">
+          <label>メモ（任意）</label>
+          <input type="text" id="candidate-memo" placeholder="例: Wantedly エンジニア">
+        </div>
+        <button class="btn btn-primary" id="generate-btn" onclick="register()">スニペットを生成</button>
       </div>
-      <button class="btn btn-primary" id="login-btn" onclick="login()">ログイン</button>
-      <p class="auth-error" id="auth-error">トークンが正しくありません</p>
+
+      <div class="snippet-result" id="snippet-result">
+        <div class="snippet-success">&#10003; 生成完了</div>
+        <div class="snippet-box" id="snippet-box"></div>
+        <div class="snippet-actions">
+          <button class="btn btn-primary" id="copy-btn" onclick="copySnippet()">スニペットをコピー</button>
+          <button class="btn btn-secondary" onclick="resetForm()">続けて登録</button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <!-- メイン画面 -->
-  <div id="main-screen">
-    <div class="header">Casual Button</div>
-    <div class="container">
-
-      <!-- 候補者登録セクション -->
-      <div class="section">
-        <div class="section-title">候補者登録</div>
-        <div id="register-form">
-          <div class="form-group">
-            <label>候補者名 *</label>
-            <input type="text" id="candidate-name" placeholder="例: 山田太郎">
-          </div>
-          <div class="form-group">
-            <label>メモ（任意）</label>
-            <input type="text" id="candidate-memo" placeholder="例: Wantedly エンジニア">
-          </div>
-          <button class="btn btn-primary" id="generate-btn" onclick="register()">スニペットを生成</button>
-        </div>
-
-        <div class="snippet-result" id="snippet-result">
-          <div class="snippet-success">&#10003; 生成完了</div>
-          <div class="snippet-box" id="snippet-box"></div>
-          <div class="snippet-actions">
-            <button class="btn btn-primary" id="copy-btn" onclick="copySnippet()">スニペットをコピー</button>
-            <button class="btn btn-secondary" onclick="resetForm()">続けて登録</button>
-          </div>
-        </div>
+    <!-- 回答状況一覧セクション -->
+    <div class="section">
+      <div class="section-title">
+        回答状況
+        <button class="btn btn-secondary btn-sm" onclick="loadList()">更新</button>
       </div>
-
-      <!-- 回答状況一覧セクション -->
-      <div class="section">
-        <div class="section-title">
-          回答状況
-          <button class="btn btn-secondary btn-sm" onclick="loadList()">更新</button>
-        </div>
-        <div id="candidate-list">
-          <div class="loading">読み込み中...</div>
-        </div>
+      <div id="candidate-list">
+        <div class="loading">読み込み中...</div>
       </div>
-
-      <div class="logout-link" onclick="logout()">ログアウト</div>
     </div>
+
   </div>
 
   <script>
     var GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyxYwQUqZxyUfbp20I5z0AcfewIHuLKncG0L-c8aPCCT8REaFxplqjnHJtUYCGt0_SjHg/exec';
-    var token = '';
     var currentSnippet = '';
-
-    // --- 初期化 ---
-    window.addEventListener('DOMContentLoaded', function() {
-      fetch('/.netlify/functions/get-token')
-        .then(function(r) { return r.json(); })
-        .then(function(res) {
-          if (res.token) {
-            token = res.token;
-            verifyAndShow();
-          }
-        })
-        .catch(function() {});
-    });
 
     // --- API呼び出し ---
     function apiPost(data) {
@@ -387,49 +302,10 @@
       }).then(function(r) { return r.json(); });
     }
 
-    // --- 認証 ---
-    function login() {
-      var input = document.getElementById('token-input').value.trim();
-      if (!input) return;
-      token = input;
-      document.getElementById('login-btn').disabled = true;
-      document.getElementById('auth-error').style.display = 'none';
-      verifyAndShow();
-    }
-
-    function verifyAndShow() {
-      apiPost({ action: 'list', token: token })
-        .then(function(res) {
-          if (res.status === 'ok') {
-            localStorage.setItem('cb_token', token);
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('main-screen').style.display = 'block';
-            renderList(res.candidates);
-          } else {
-            authFail();
-          }
-        })
-        .catch(function() { authFail(); });
-    }
-
-    function authFail() {
-      token = '';
-      localStorage.removeItem('cb_token');
-      document.getElementById('auth-error').style.display = 'block';
-      document.getElementById('login-btn').disabled = false;
-      document.getElementById('auth-screen').style.display = '';
-      document.getElementById('main-screen').style.display = 'none';
-    }
-
-    function logout() {
-      token = '';
-      localStorage.removeItem('cb_token');
-      document.getElementById('auth-screen').style.display = '';
-      document.getElementById('main-screen').style.display = 'none';
-      document.getElementById('token-input').value = '';
-      document.getElementById('auth-error').style.display = 'none';
-      document.getElementById('login-btn').disabled = false;
-    }
+    // --- 初期化 ---
+    window.addEventListener('DOMContentLoaded', function() {
+      loadList();
+    });
 
     // --- 候補者登録 ---
     function register() {
@@ -444,7 +320,7 @@
       btn.disabled = true;
       btn.textContent = '生成中...';
 
-      apiPost({ action: 'register', token: token, candidate_name: name, memo: memo })
+      apiPost({ action: 'register', candidate_name: name, memo: memo })
         .then(function(res) {
           if (res.status === 'ok') {
             currentSnippet = res.snippet;
@@ -452,8 +328,6 @@
             document.getElementById('snippet-result').classList.add('show');
             document.getElementById('register-form').style.display = 'none';
             loadList();
-          } else if (res.code === 'AUTH_FAILED') {
-            authFail();
           } else {
             alert('エラー: ' + (res.message || '登録に失敗しました'));
           }
@@ -501,12 +375,10 @@
       var el = document.getElementById('candidate-list');
       el.innerHTML = '<div class="loading">読み込み中...</div>';
 
-      apiPost({ action: 'list', token: token })
+      apiPost({ action: 'list' })
         .then(function(res) {
           if (res.status === 'ok') {
             renderList(res.candidates);
-          } else if (res.code === 'AUTH_FAILED') {
-            authFail();
           }
         })
         .catch(function() {
@@ -549,7 +421,6 @@
       html += '</div>';
       el.innerHTML = html;
 
-      // カードデータを保持
       window._candidates = candidates;
     }
 
@@ -596,16 +467,6 @@
       d.textContent = str;
       return d.innerHTML;
     }
-
-    // Enterキーで操作
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') {
-        if (document.getElementById('auth-screen').style.display !== 'none' &&
-            document.activeElement === document.getElementById('token-input')) {
-          login();
-        }
-      }
-    });
   </script>
 </body>
 </html>
