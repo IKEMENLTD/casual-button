@@ -59,26 +59,23 @@
     }
 
     .section-title {
-      font-size: 11px;
+      font-size: 13px;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      opacity: 0.6;
     }
 
     /* フォーム */
     label {
       display: block;
-      font-size: 10px;
-      font-weight: 400;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--ink);
-      opacity: 0.6;
+      opacity: 0.8;
       margin-bottom: 4px;
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
@@ -281,14 +278,16 @@
       display: block;
       text-align: center;
       padding: 14px;
-      color: var(--muted);
-      font-size: 10px;
+      color: var(--ink);
+      font-size: 11px;
       cursor: pointer;
-      text-transform: uppercase;
       letter-spacing: 1px;
+      border: 1px dashed var(--ink);
+      margin-top: 4px;
+      transition: background 0.15s;
     }
 
-    .logout-link:hover { color: var(--ink); }
+    .logout-link:hover { background: var(--bg); }
   </style>
 </head>
 <body>
