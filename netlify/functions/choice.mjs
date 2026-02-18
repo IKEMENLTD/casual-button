@@ -160,23 +160,22 @@ function thankYouPage(name, label, message, changeLinks, company) {
     }
 
     .response-label {
-      font-size: 11px;
-      opacity: 0.6;
-      margin-bottom: 6px;
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 8px;
     }
 
     .response-value {
       display: inline-block;
-      font-size: 14px;
+      font-size: 16px;
       font-weight: 700;
       margin-bottom: 24px;
     }
 
     .thank-message {
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.8;
       margin-bottom: 30px;
-      opacity: 0.8;
     }
 
     .divider {
@@ -186,11 +185,10 @@ function thankYouPage(name, label, message, changeLinks, company) {
     }
 
     .change-section-title {
-      font-size: 10px;
-      opacity: 0.6;
+      font-size: 12px;
+      opacity: 0.7;
       margin-bottom: 15px;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
     }
 
     .change-links {
@@ -207,7 +205,8 @@ function thankYouPage(name, label, message, changeLinks, company) {
       color: var(--ink);
       text-decoration: none;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 13px;
+      font-weight: 700;
       text-align: center;
       transition: background 0.15s;
     }
@@ -217,8 +216,8 @@ function thankYouPage(name, label, message, changeLinks, company) {
     }
 
     .company-name {
-      font-size: 10px;
-      opacity: 0.5;
+      font-size: 11px;
+      opacity: 0.6;
     }
   </style>
 </head>
