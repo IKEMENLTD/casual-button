@@ -122,7 +122,7 @@ function thankYouPage(name, label, message, changeLinks, company) {
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'JetBrains Mono', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
       background: var(--bg);
       background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
       background-size: 20px 20px;
@@ -254,7 +254,7 @@ function errorPage(title, message) {
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'JetBrains Mono', monospace;
+      font-family: 'JetBrains Mono', 'Hiragino Sans', 'Noto Sans JP', sans-serif;
       background: #f0f4f8;
       background-image: linear-gradient(rgba(42,67,101,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(42,67,101,0.1) 1px, transparent 1px);
       background-size: 20px 20px;
