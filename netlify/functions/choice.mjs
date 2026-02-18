@@ -204,7 +204,6 @@ function thankYouPage(name, label, message, changeLinks, company) {
       border: 1px dashed var(--ink);
       color: var(--ink);
       text-decoration: none;
-      font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
       font-weight: 700;
       text-align: center;
